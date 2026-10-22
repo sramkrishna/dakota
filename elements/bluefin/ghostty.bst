@@ -266,7 +266,11 @@ config:
       gcc_dir=
       LIBC
       sed -i 's/^      //' /tmp/system-libc.conf
+      # taskset limits zig to 6 cores so its parallel subprocess fan-out
+      # doesn't exceed the sandbox's PID/nofile caps and trip
+      # `SystemResources`. Observed on self-hosted 12+ core builders.
       DESTDIR="%{install-root}" \
+      taskset -c 0-5 \
       zig build \
         --libc /tmp/system-libc.conf \
         --prefix /usr \
