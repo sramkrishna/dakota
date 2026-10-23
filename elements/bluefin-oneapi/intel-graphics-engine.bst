@@ -17,6 +17,7 @@ build-depends:
 - freedesktop-sdk.bst:components/patch.bst
 - freedesktop-sdk.bst:components/git.bst
 - freedesktop-sdk.bst:components/sed.bst   # also missing per the config.guess error
+- freedesktop-sdk.bst:components/python3-pyyaml.bst
 
 depends:
 - freedesktop-sdk.bst:public-stacks/runtime-minimal.bst
