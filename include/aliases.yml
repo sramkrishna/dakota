@@ -42,6 +42,7 @@ aliases:
   kerberos: https://kerberos.org/
   kldp: https://kldp.net/
   launchpad: https://launchpad.net/
+  levelzero: https://github.com/oneapi-src/level-zero/archive/refs/tags/
   libopenraw: https://libopenraw.freedesktop.org/
   libvirt: https://libvirt.org/sources/
   mozilla: https://ftp.mozilla.org/pub/
