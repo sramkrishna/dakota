@@ -81,7 +81,7 @@ config:
       cd igc-workspace/llvm-project
       git init -q
       git add -A
-      git commit -q -m "staged"
+      git commit -q -m "staged" --allow-empty || true
       cd ../..
 
       cd igc-workspace
