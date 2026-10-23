@@ -33,6 +33,7 @@ aliases:
   ghcr: https://ghcr.io/
   github_files: https://github.com/
   gitlab_files: https://gitlab.com/
+  gmmlib: https://github.com/intel/gmmlib/archive/refs/tags/
   gnome_downloads: https://download.gnome.org/sources/
   gnome_extensions: https://extensions.gnome.org/download-extension/
   gnome_nightly: https://nightly.gnome.org/

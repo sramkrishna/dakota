@@ -17,7 +17,7 @@ sources:
   track: v*.*.*
   exclude:
   - "*rc*"
-  ref: v1.19.0-0-gec7b4e2fa2caecad6d89be4a26029b831fe7503a
+  ref: v1.20.1-0-gdffc40b4f820ce5c512633bac9e0418d0e05a2ee
 
 build-depends:
 - freedesktop-sdk.bst:components/go.bst

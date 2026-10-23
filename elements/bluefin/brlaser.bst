@@ -5,7 +5,7 @@ sources:
 - kind: git_repo
   url: github:pdewacht/brlaser.git
   track: "v[0-9]*"
-  ref: 23117fe9e0266396e4791cdae84d979928aed135 # v6 (peeled commit)
+  ref: v6-0-g23117fe9e0266396e4791cdae84d979928aed135 # v6 (peeled commit)
 
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-cmake.bst
