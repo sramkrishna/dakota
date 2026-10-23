@@ -75,6 +75,15 @@ config:
     - |
       git config --global user.email "builder@dakota.invalid"
       git config --global user.name "Dakota Builder"
+
+      # bst stages sources as plain trees without .git; opencl-clang's
+      # apply_patches uses `git am` which needs a git repository. Init one.
+      cd igc-workspace/llvm-project
+      git init -q
+      git add -A
+      git commit -q -m "staged"
+      cd ../..
+
       cd igc-workspace
       mkdir build
       cd build
@@ -90,8 +99,6 @@ config:
         -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=%{build-root}/igc-workspace/SPIRV-Headers \
         -DIGC_OPTION__LLVM_STOCK_SOURCES=ON \
         -DCCLANG_BUILD_INTREE_LLVM=TRUE \
-        -DAPPLY_PATCHES=OFF \
-        -DCLANG_SUPPORTS_CL31=OFF \
         -DCMAKE_CXX_FLAGS="-include cstdint"
       cmake --build . --parallel $(nproc)
 
