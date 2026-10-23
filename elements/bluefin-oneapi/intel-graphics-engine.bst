@@ -91,6 +91,7 @@ config:
         -DIGC_OPTION__LLVM_STOCK_SOURCES=ON \
         -DCCLANG_BUILD_INTREE_LLVM=TRUE \
         -DAPPLY_PATCHES=OFF \
+        -DCLANG_SUPPORTS_CL31=OFF \
         -DCMAKE_CXX_FLAGS="-include cstdint"
       cmake --build . --parallel $(nproc)
 
