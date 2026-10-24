@@ -66,8 +66,9 @@ config:
       mkdir build && cd build
       # libcody uses u8"..." literals which under C++20 (GCC 16 default)
       # return const char8_t[] instead of const char[]. -fno-char8_t restores
-      # the C++17 behavior that GCC 14's libcody expects.
-      export CXXFLAGS="${CXXFLAGS} -fno-char8_t"
+      # the C++17 behavior libcody expects. Baked into CXX itself so it
+      # propagates even to GCC's internal makefiles that filter CXXFLAGS.
+      export CXX="g++ -fno-char8_t"
       ../configure \
         --prefix=/opt/gcc-14 \
         --enable-languages=c,c++ \
