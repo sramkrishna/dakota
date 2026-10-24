@@ -81,6 +81,7 @@ config:
 
       cd igc-workspace
       mkdir build && cd build
+      export CFLAGS="${CFLAGS} -Wno-error"
       cmake ../igc \
         -G Ninja \
         -DCMAKE_INSTALL_PREFIX=/usr \
@@ -93,7 +94,6 @@ config:
         -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=%{build-root}/igc-workspace/SPIRV-Headers \
         -DIGC_OPTION__LLVM_STOCK_SOURCES=ON \
         -DCCLANG_BUILD_INTREE_LLVM=TRUE \
-        -Wno-error
         -DAPPLY_PATCHES=OFF \
         -DCMAKE_CXX_FLAGS="-include cstdint"
       cmake --build . --parallel $(nproc)
