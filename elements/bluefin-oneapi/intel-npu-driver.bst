@@ -17,7 +17,9 @@ build-depends:
 - freedesktop-sdk.bst:components/openssl.bst
 - freedesktop-sdk.bst:components/libdrm.bst         # verify path
 - freedesktop-sdk.bst:components/lz4.bst
-- freedesktop-sdk.bst:components/systemd.bst        # for libudev; verify path
+# systemd.bst dropped — transitively pulls gnome-build-meta's systemd-base
+# which doesn't build under fdsdk 26.08rc.2's GCC 16. If intel-npu-driver
+# actually needs libudev, add it back and figure out a lighter path.
   # Need L0 headers to build the ICD driver interface.
 - bluefin-oneapi/levelzero.bst
 
