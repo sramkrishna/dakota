@@ -10,6 +10,9 @@ kind: cmake
 # OpenVINO's NPU plugin consumes this driver via L0 at runtime.
 
 build-depends:
+# Dakota's sandbox-tools provides sh, basic POSIX utils — without this
+# the sandbox fails before cmake even starts.
+- core/sandbox-tools.bst
 - freedesktop-sdk.bst:components/cmake.bst
 - freedesktop-sdk.bst:components/pkg-config.bst
 - freedesktop-sdk.bst:components/ninja.bst
