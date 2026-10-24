@@ -81,7 +81,7 @@ config:
 
       cd igc-workspace
       mkdir build && cd build
-      export CFLAGS="${CFLAGS} -Wno-error"
+      export CFLAGS="${CFLAGS} -U_FORTIFY_SOURCE"
       cmake ../igc \
         -G Ninja \
         -DCMAKE_INSTALL_PREFIX=/usr \
