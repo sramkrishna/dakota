@@ -7,6 +7,7 @@ build-depends:
 - freedesktop-sdk.bst:components/make.bst
 - freedesktop-sdk.bst:components/flex.bst
 - freedesktop-sdk.bst:components/bison.bst
+- freedesktop-sdk.bst:components/sed.bst
 - freedesktop-sdk.bst:components/m4.bst
 - freedesktop-sdk.bst:components/gmp.bst
 - freedesktop-sdk.bst:components/mpfr.bst         # verify fdsdk has this
