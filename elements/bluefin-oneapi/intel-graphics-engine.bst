@@ -67,6 +67,26 @@ sources:
   ref: '775ee89eb77d067df3f5736e2b4bb2f5f3e39ead915f11f3d366139dcb42209d'
   directory: igc-workspace/SPIRV-Headers
 
+- kind: git_repo
+url: github:intel/level-zero-vpu-extensions.git
+track: main
+directory: third_party/level-zero-npu-extensions
+
+- kind: git_repo
+url: github:openvinotoolkit/npu_compiler_elf.git
+track: main
+directory: third_party/npu_compiler_elf
+
+- kind: git_repo
+url: github:google/googletest.git
+track: main
+directory: third_party/googletest
+
+- kind: git_repo
+url: github:jbeder/yaml-cpp.git
+track: master
+directory: third_party/yaml-cpp
+
 variables:
   strip-binaries: ""
 
