@@ -26,7 +26,7 @@ sources:
 - kind: tar
   url: ftp_gnu_org:mpc/mpc-1.3.1.tar.gz
   base-dir: mpc-1.3.1
-  directory: gcc-14.2.0/mpc
+  directory: mpc
 
   ref: ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8
 variables:
@@ -36,7 +36,7 @@ config:
   build-commands:
   - |
     mkdir build && cd build
-    ../gcc-14.2.0/configure \
+    ../configure \
       --prefix=/opt/gcc-14 \
       --enable-languages=c,c++ \
       --disable-multilib \
