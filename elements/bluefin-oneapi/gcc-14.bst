@@ -44,6 +44,7 @@ config:
       --disable-nls \
       --enable-shared \
       --enable-threads=posix \
+      --without-isl \
       --with-system-zlib
     make -j$(nproc)
 
