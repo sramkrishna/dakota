@@ -35,6 +35,31 @@ sources:
   track: v1.38.0
 
   ref: v1.38.0-0-gaea583dcd86a4723a8d3bb06ad94b6eb2f80c6f2
+
+- kind: git_repo
+  url: github:intel/level-zero-vpu-extensions.git
+  track: main
+  directory: third_party/level-zero-npu-extensions
+
+  ref: ddbf8d65e2e22150e23efd383839aa80f84d4dac
+- kind: git_repo
+  url: github:openvinotoolkit/npu_compiler_elf.git
+  track: master
+  directory: third_party/npu_compiler_elf
+
+  ref: npu_ud_2026_28_rc2-2-gedbd3b0dbb6f51f4f6c18aba3b26d4c20b1a5964
+- kind: git_repo
+  url: github:google/googletest.git
+  track: main
+  directory: third_party/googletest
+
+  ref: v1.14.0-pre-408-gcd8e73f067129f8489e35c7b51c7a68552b289d2
+- kind: git_repo
+  url: github:jbeder/yaml-cpp.git
+  track: master
+  directory: third_party/yaml-cpp
+
+  ref: yaml-cpp-0.9.0-75-gc5e65360373d1d99d6b6848c991cd4fcee435009
 variables:
   strip-binaries: ""
   # Point cmake at the staged L0 headers from levelzero.bst (lands under
