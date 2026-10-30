@@ -14,7 +14,7 @@ build-depends:
 - bluefin-oneapi/levelzero.bst
 
 depends:
-- freedesktop-sdk.bst:bootstrap-import.bst
+- freedesktop-sdk.bst:public-stacks/runtime-minimal.bst
 - freedesktop-sdk.bst:components/libdrm.bst
 
 sources:
