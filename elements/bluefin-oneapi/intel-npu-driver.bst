@@ -23,6 +23,7 @@ sources:
   track: v1.38.0
   checkout-submodules: true
 
+  ref: aea583dcd86a4723a8d3bb06ad94b6eb2f80c6f2
 variables:
   strip-binaries: ""
   cmake-local: >-
