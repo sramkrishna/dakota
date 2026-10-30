@@ -20,7 +20,7 @@ sources:
   # tables consistent at runtime.
   - kind: tar
     url: levelzero:v1.32.0.tar.gz
-    ref: ''
+    ref: b658d3be89b2ea3c5e6b3214592acb58a4875e738184b1a4cc7e9cf878b5f7b9
 
 variables:
   strip-binaries: ""
