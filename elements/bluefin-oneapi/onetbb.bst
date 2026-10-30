@@ -17,6 +17,7 @@ sources:
   url: github:oneapi-src/oneTBB/archive/refs/tags/v2023.2.0.tar.gz
   # ref: '' — run `just bst source track bluefin-oneapi/onetbb.bst` to fill
 
+  ref: 80cb62e62defeee67ea1885a6f72d97ac81404f8fde9cded62fb51524808a30c
 variables:
   strip-binaries: ""
   # TBB_TEST=OFF: skip the gtest-based test suite (saves build time + a dep)
