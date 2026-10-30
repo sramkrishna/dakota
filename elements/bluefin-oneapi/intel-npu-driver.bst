@@ -27,7 +27,7 @@ sources:
 variables:
   strip-binaries: ""
   cmake-local: >-
-    -DENABLE_NPU_COMPILER_BUILD=ON
+    -DENABLE_NPU_COMPILER_BUILD=OFF
     -DENABLE_NPU_TESTS=OFF
     -DCMAKE_BUILD_TYPE=Release
     -DBUILD_SHARED_LIBS=ON
