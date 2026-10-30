@@ -12,3 +12,12 @@ sources:
   url: gitlab:freedesktop-sdk/freedesktop-sdk-extra.git
   track: freedesktop-sdk-extra-26.08*
   ref: freedesktop-sdk-extra-26.08.4-0-g1c3778a286f87e2202d9af7b92542e5d49d50929
+
+config:
+  # freedesktop-sdk-extra internally references its own freedesktop-sdk
+  # junction. Redirect that to Dakota's existing freedesktop-sdk.bst so
+  # we don't end up with two instances of the fdsdk project loaded in
+  # parallel. Same pattern Dakota uses for gnome-build-meta.bst.
+  overrides:
+    freedesktop-sdk.bst: freedesktop-sdk.bst
+    plugins/buildstream-plugins-community.bst: plugins/buildstream-plugins-community.bst
