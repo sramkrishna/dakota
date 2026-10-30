@@ -20,6 +20,12 @@ build-depends:
 - bluefin-oneapi/levelzero.bst
 # intel-npu-driver provides the headers for the NPU plugin to link against.
 - bluefin-oneapi/intel-npu-driver.bst
+# OpenVINO's developer_package/target_flags.cmake uses external `grep` (and
+# `sed` elsewhere) inside execute_process pipelines for feature detection.
+# fdsdk's build sandbox is minimal and doesn't ship these by default — add
+# them explicitly so configure can run.
+- freedesktop-sdk.bst:components/grep.bst
+- freedesktop-sdk.bst:components/sed.bst
 
 depends:
 - freedesktop-sdk.bst:public-stacks/runtime-minimal.bst
