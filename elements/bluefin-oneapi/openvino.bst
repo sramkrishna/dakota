@@ -43,8 +43,6 @@ variables:
   #   ENABLE_TESTS=OFF       — no gtest-based tests
   #   ENABLE_WHEEL=OFF       — no Python wheel packaging
   #   THREADING=TBB          — use our onetbb.bst
-  # Same warning-as-error shims as npu-driver (fdsdk hardening collides
-  # with -Werror-ful upstreams).
   cmake-local: >-
     -DCMAKE_BUILD_TYPE=Release
     -DBUILD_SHARED_LIBS=ON
@@ -56,5 +54,3 @@ variables:
     -DENABLE_TESTS=OFF
     -DENABLE_WHEEL=OFF
     -DTHREADING=TBB
-    "-DCMAKE_C_FLAGS=-U_FORTIFY_SOURCE"
-    "-DCMAKE_CXX_FLAGS=-U_FORTIFY_SOURCE -Wno-error=missing-field-initializers"
