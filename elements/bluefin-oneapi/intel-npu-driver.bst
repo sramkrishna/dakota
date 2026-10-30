@@ -24,6 +24,15 @@ sources:
   checkout-submodules: true
 
   ref: aea583dcd86a4723a8d3bb06ad94b6eb2f80c6f2
+environment:
+  # Avoid _FORTIFY_SOURCE redefinition (fdsdk sets =3, npu-driver sets =2).
+  # Suppress missing-field-initializers-as-error: npu-driver v1.38.0
+  # intentionally leaves newer L0 dditable extension slots as NULL
+  # (ICD-style "not implemented" marker). The warning is correct, but
+  # treating it as error prevents build on hardened toolchains.
+  CFLAGS: '%{CFLAGS} -U_FORTIFY_SOURCE'
+  CXXFLAGS: '%{CXXFLAGS} -U_FORTIFY_SOURCE -Wno-error=missing-field-initializers'
+
 variables:
   strip-binaries: ""
   cmake-local: >-
@@ -31,7 +40,3 @@ variables:
     -DENABLE_NPU_TESTS=OFF
     -DCMAKE_BUILD_TYPE=Release
     -DBUILD_SHARED_LIBS=ON
-    -DCMAKE_C_FLAGS=-U_FORTIFY_SOURCE
-    -DCMAKE_CXX_FLAGS=-U_FORTIFY_SOURCE
-    -DCMAKE_C_FLAGS_INIT=-fcf-protection=none
-    -DCMAKE_CXX_FLAGS_INIT=-fcf-protection=none
