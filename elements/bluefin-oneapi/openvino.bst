@@ -49,6 +49,9 @@ variables:
   #   ENABLE_TESTS=OFF       — no gtest-based tests
   #   ENABLE_WHEEL=OFF       — no Python wheel packaging
   #   THREADING=TBB          — use our onetbb.bst
+  #   ENABLE_SYSTEM_TBB=ON   — bst sandbox is hermetic (no network); use
+  #     onetbb.bst via find_package(TBB) rather than letting openvino
+  #     download its own prebuilt tarball from storage.openvinotoolkit.org.
   cmake-local: >-
     -DCMAKE_BUILD_TYPE=Release
     -DBUILD_SHARED_LIBS=ON
@@ -60,3 +63,4 @@ variables:
     -DENABLE_TESTS=OFF
     -DENABLE_WHEEL=OFF
     -DTHREADING=TBB
+    -DENABLE_SYSTEM_TBB=ON
