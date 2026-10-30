@@ -14,10 +14,13 @@ depends:
 
 
 sources:
-  # level-zero releases
+  # level-zero releases — pinned to v1.32.0 to match intel-npu-driver v1.38.0's
+  # compat matrix. Newer L0 (1.34) added dditable fields npu-driver v1.38.0
+  # doesn't populate; using the matching version keeps the function pointer
+  # tables consistent at runtime.
   - kind: tar
-    url: levelzero:v1.34.0.tar.gz
-    ref: 5856f6ff3ad465f8ea5dc7b7dc4f8b3d436d826f2751f91896d204b638fdc0d9
+    url: levelzero:v1.32.0.tar.gz
+    ref: ''
 
 variables:
   strip-binaries: ""
