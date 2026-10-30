@@ -9,7 +9,7 @@ build-depends:
 - core/sandbox-tools.bst
 # Buildsystem-cmake pulls cmake + ninja + the whole toolchain.
 - freedesktop-sdk.bst:public-stacks/buildsystem-cmake.bst
-- freedesktop-sdk.bst:components/boost.bst
+- freedesktop-sdk-extra.bst:components/boost.bst
 # Need L0 headers to build the ICD driver interface.
 - bluefin-oneapi/levelzero.bst
 
