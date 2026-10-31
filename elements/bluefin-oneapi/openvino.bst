@@ -45,7 +45,9 @@ variables:
   #   ENABLE_INTEL_NPU=ON    — NPU plugin (the whole point)
   #   ENABLE_INTEL_GPU=OFF   — GPU plugin needs IGC (parked, see [[fdsdk-26]])
   #   ENABLE_PYTHON=OFF      — skip Python bindings tar-pit
-  #   ENABLE_SAMPLES=OFF     — no sample apps
+  #   ENABLE_SAMPLES=ON      — brings in benchmark_app for sanity-checking the
+  #     runtime + plugins (even if it's a CV-oriented benchmark). Costs ~15
+  #     extra sample binaries but we need SOMETHING that exercises libopenvino.so.
   #   ENABLE_TESTS=OFF       — no gtest-based tests
   #   ENABLE_WHEEL=OFF       — no Python wheel packaging
   #   THREADING=TBB          — use our onetbb.bst
@@ -59,7 +61,7 @@ variables:
     -DENABLE_INTEL_NPU=ON
     -DENABLE_INTEL_GPU=OFF
     -DENABLE_PYTHON=OFF
-    -DENABLE_SAMPLES=OFF
+    -DENABLE_SAMPLES=ON
     -DENABLE_TESTS=OFF
     -DENABLE_WHEEL=OFF
     -DTHREADING=TBB
