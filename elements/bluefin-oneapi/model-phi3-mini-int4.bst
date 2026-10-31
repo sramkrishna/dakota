@@ -19,6 +19,7 @@ sources:
   track: main
   checkout-submodules: false
 
+  ref: 4f812530a007e205a0c04f17c8c28fb5c8015a3c
 config:
   source: /
   target: /usr/share/models/phi3-mini-int4
