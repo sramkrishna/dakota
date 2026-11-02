@@ -43,6 +43,18 @@ sources:
   ref: 8138cec27c2f2282f4a34d9a016e3374cd40e5c6e9cb335063db66a0a3b71fad
   base-dir: sentencepiece-0.2.1
   directory: thirdparty_prefetched/sentencepiece
+
+# pcre2: openvino_tokenizers also FetchContents this at configure time
+# (see thirdparty/openvino_tokenizers/src/CMakeLists.txt:190). The upstream
+# FetchContent references the .zip; we use the equivalent .tar.gz from the
+# same release so core kind: tar works without registering community-plugins'
+# kind: zip. Content is identical; FETCHCONTENT_SOURCE_DIR_PCRE2 bypasses
+# cmake's URL_HASH check so the archive format doesn't matter.
+- kind: tar
+  url: github:PCRE2Project/pcre2/releases/download/pcre2-10.46/pcre2-10.46.tar.gz
+  base-dir: pcre2-10.46
+  directory: thirdparty_prefetched/pcre2
+  ref: 8d28d7f2c3b970c3a4bf3776bcbb5adfc923183ce74bc8df1ebaad8c1985bd07
 variables:
   strip-binaries: ""
   # ENABLE_PYTHON=OFF — same reason as openvino (we don't ship pybindings)
@@ -55,3 +67,4 @@ variables:
     -DENABLE_SAMPLES=ON
     -DENABLE_TESTS=OFF
     -DFETCHCONTENT_SOURCE_DIR_SENTENCEPIECE=%{build-root}/thirdparty_prefetched/sentencepiece
+    -DFETCHCONTENT_SOURCE_DIR_PCRE2=%{build-root}/thirdparty_prefetched/pcre2
