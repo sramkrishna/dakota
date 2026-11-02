@@ -31,6 +31,18 @@ sources:
   checkout-submodules: true
 
   ref: bd8d6542e3ca1ac30042d5d8d4202ce00b5f4af0
+
+# openvino_tokenizers (a submodule of openvino-genai) uses FetchContent to
+# pull sentencepiece from GitHub at configure time. bst sandbox is hermetic,
+# so we pre-stage the exact tarball it wants (URL+sha256 copied from
+# thirdparty/openvino_tokenizers/src/CMakeLists.txt) at a known relative
+# path, then point FetchContent at it via FETCHCONTENT_SOURCE_DIR_SENTENCEPIECE
+# in cmake-local below.
+- kind: tar
+  url: github:google/sentencepiece/releases/download/v0.2.1/sentencepiece-0.2.1.tar.gz
+  ref: 8138cec27c2f2282f4a34d9a016e3374cd40e5c6e9cb335063db66a0a3b71fad
+  base-dir: sentencepiece-0.2.1
+  directory: thirdparty_prefetched/sentencepiece
 variables:
   strip-binaries: ""
   # ENABLE_PYTHON=OFF — same reason as openvino (we don't ship pybindings)
@@ -42,3 +54,4 @@ variables:
     -DENABLE_PYTHON=OFF
     -DENABLE_SAMPLES=ON
     -DENABLE_TESTS=OFF
+    -DFETCHCONTENT_SOURCE_DIR_SENTENCEPIECE=%{build-root}/thirdparty_prefetched/sentencepiece
