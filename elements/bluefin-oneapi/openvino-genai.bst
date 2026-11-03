@@ -73,18 +73,35 @@ sources:
   track: main
   ref: 3e4c61c616eda133cfb1e440fc7a14bf1729bbee
   directory: thirdparty_prefetched/minja
+
+# safetensors.h: openvino-genai's src/cpp/CMakeLists.txt:131 pins a specific
+# commit. GitHub commit-archive URL serves tar.gz for any sha.
+- kind: tar
+  url: github:hsnyder/safetensors.h/archive/974a85d7dfd6e010558353226638bb26d6b9d756.tar.gz
+  ref: 9aaf5961609601cf9aaa96582a207bce7c6e5fbf57ed2cc669bb7bde6a937d4b
+  base-dir: safetensors.h-974a85d7dfd6e010558353226638bb26d6b9d756
+  directory: thirdparty_prefetched/safetensors.h
 variables:
   strip-binaries: ""
-  # ENABLE_PYTHON=OFF — same reason as openvino (we don't ship pybindings)
-  # ENABLE_SAMPLES=ON — ship benchmark_genai + chat_sample for sanity checks
-  # ENABLE_TESTS=OFF — we don't run gtests
+  # ENABLE_PYTHON=OFF  — same reason as openvino (we don't ship pybindings)
+  # ENABLE_SAMPLES=ON  — ship benchmark_genai + chat_sample for sanity checks
+  # ENABLE_TESTS=OFF   — we don't run gtests
+  # ENABLE_GGUF=OFF    — gguflib is for loading llama.cpp GGUF models; we're
+  #                      using OpenVINO IR (via model-phi3-mini-int4.bst), so
+  #                      disable to avoid prestaging another FetchContent.
+  # ENABLE_XGRAMMAR=OFF — xgrammar provides constrained decoding (JSON mode,
+  #                       grammar sampling). Not required for basic chat
+  #                       completion; disable to avoid prestaging another dep.
   cmake-local: >-
     -DCMAKE_BUILD_TYPE=Release
     -DBUILD_SHARED_LIBS=ON
     -DENABLE_PYTHON=OFF
     -DENABLE_SAMPLES=ON
     -DENABLE_TESTS=OFF
+    -DENABLE_GGUF=OFF
+    -DENABLE_XGRAMMAR=OFF
     -DFETCHCONTENT_SOURCE_DIR_SENTENCEPIECE=%{build-root}/thirdparty_prefetched/sentencepiece
     -DFETCHCONTENT_SOURCE_DIR_PCRE2=%{build-root}/thirdparty_prefetched/pcre2
     -DFETCHCONTENT_SOURCE_DIR_NLOHMANN_JSON=%{build-root}/thirdparty_prefetched/nlohmann_json
     -DFETCHCONTENT_SOURCE_DIR_MINJA=%{build-root}/thirdparty_prefetched/minja
+    "-DFETCHCONTENT_SOURCE_DIR_SAFETENSORS.H=%{build-root}/thirdparty_prefetched/safetensors.h"
