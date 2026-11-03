@@ -71,7 +71,7 @@ sources:
 - kind: git
   url: github:google/minja.git
   track: main
-  ref: 3e4c61c616eda133cfb1e440fc7a14bf1729bbee
+  ref: 021c2293c187789ef13d56c6cfd89c9b134fd80f
   directory: thirdparty_prefetched/minja
 
 # safetensors.h: openvino-genai's src/cpp/CMakeLists.txt:131 pins a specific
@@ -81,6 +81,36 @@ sources:
   ref: 9aaf5961609601cf9aaa96582a207bce7c6e5fbf57ed2cc669bb7bde6a937d4b
   base-dir: safetensors.h-974a85d7dfd6e010558353226638bb26d6b9d756
   directory: thirdparty_prefetched/safetensors.h
+
+# cxxopts: CLI parser used by text_generation and image_generation samples
+# (samples/cpp/text_generation/CMakeLists.txt:45, image_generation:232)
+- kind: tar
+  url: github:jarro2783/cxxopts/archive/refs/tags/v3.3.1.tar.gz
+  base-dir: cxxopts-3.3.1
+  directory: thirdparty_prefetched/cxxopts
+
+# dr_libs: audio decoding headers used by speech/omni/ASR samples
+  ref: 3bfc70542c521d4b55a46429d808178916a579b28d048bd8c727ee76c39e2072
+- kind: tar
+  url: github:mackron/dr_libs/archive/da35f9d6c7374a95353fd1df1d394d44ab66cf01.tar.gz
+  base-dir: dr_libs-da35f9d6c7374a95353fd1df1d394d44ab66cf01
+  directory: thirdparty_prefetched/dr_libs
+
+# indicators: progress bar library used by image/video_generation samples
+  ref: 2704d347f480ca1bc92233fb01747e4550cc8031735b6ea62ca9990ebb8851ae
+- kind: tar
+  url: github:p-ranav/indicators/archive/refs/tags/v2.3.tar.gz
+  base-dir: indicators-2.3
+  directory: thirdparty_prefetched/indicators
+
+# stb: nothings/stb (image loading) used by c/visual_language_chat sample.
+# Upstream FetchContent uses GIT_TAG master (unpinned); we pin via bst track.
+  ref: 70da7a693ff7a6a283850ab6d62acf628eea17d386488af8918576d0760aef7b
+- kind: git
+  url: github:nothings/stb.git
+  track: master
+  directory: thirdparty_prefetched/stb
+  ref: d14d46f6b44456eb88beac58cba833a4135d4c89
 variables:
   strip-binaries: ""
   # ENABLE_PYTHON=OFF  — same reason as openvino (we don't ship pybindings)
@@ -105,3 +135,7 @@ variables:
     -DFETCHCONTENT_SOURCE_DIR_NLOHMANN_JSON=%{build-root}/thirdparty_prefetched/nlohmann_json
     -DFETCHCONTENT_SOURCE_DIR_MINJA=%{build-root}/thirdparty_prefetched/minja
     "-DFETCHCONTENT_SOURCE_DIR_SAFETENSORS.H=%{build-root}/thirdparty_prefetched/safetensors.h"
+    -DFETCHCONTENT_SOURCE_DIR_CXXOPTS=%{build-root}/thirdparty_prefetched/cxxopts
+    -DFETCHCONTENT_SOURCE_DIR_DR_LIBS=%{build-root}/thirdparty_prefetched/dr_libs
+    -DFETCHCONTENT_SOURCE_DIR_INDICATORS=%{build-root}/thirdparty_prefetched/indicators
+    -DFETCHCONTENT_SOURCE_DIR_STB=%{build-root}/thirdparty_prefetched/stb
