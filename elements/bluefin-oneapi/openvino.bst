@@ -26,6 +26,12 @@ build-depends:
 # them explicitly so configure can run.
 - freedesktop-sdk.bst:components/grep.bst
 - freedesktop-sdk.bst:components/sed.bst
+# Python3 is needed by the vendored ONNX submodule's CMakeLists to generate
+# protobuf bindings at configure time (thirdparty/onnx/onnx/CMakeLists.txt
+# calls find_package(Python3 REQUIRED COMPONENTS Interpreter)). Also the
+# knob that gates ENABLE_OV_ONNX_FRONTEND ON/OFF in openvino itself
+# (features.cmake:148) is a find_host_package(Python3) check.
+- freedesktop-sdk.bst:components/python3.bst
 
 depends:
 - freedesktop-sdk.bst:public-stacks/runtime-minimal.bst
