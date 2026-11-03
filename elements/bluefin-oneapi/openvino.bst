@@ -48,6 +48,11 @@ variables:
   #   ENABLE_SAMPLES=ON      — brings in benchmark_app for sanity-checking the
   #     runtime + plugins (even if it's a CV-oriented benchmark). Costs ~15
   #     extra sample binaries but we need SOMETHING that exercises libopenvino.so.
+  #   ENABLE_OV_ONNX_FRONTEND=ON / ENABLE_OV_TF_FRONTEND=ON — both default ON
+  #     but are auto-disabled by openvino's cmake if `find_host_package(Python3)`
+  #     fails at configure time (see cmake/features.cmake:148). The sandbox
+  #     doesn't always expose python3 on PATH, so we force-enable. Both are
+  #     required by openvino-genai's openvino_tokenizers submodule.
   #   ENABLE_TESTS=OFF       — no gtest-based tests
   #   ENABLE_WHEEL=OFF       — no Python wheel packaging
   #   THREADING=TBB          — use our onetbb.bst
@@ -69,3 +74,5 @@ variables:
     -DENABLE_TBBBIND_2_5=OFF
     -DENABLE_JS=OFF
     -DCPACK_GENERATOR=DEB
+    -DENABLE_OV_ONNX_FRONTEND=ON
+    -DENABLE_OV_TF_FRONTEND=ON
