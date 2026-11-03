@@ -1,0 +1,37 @@
+Drop sample subdirs incompatible with hermetic bst sandbox.
+
+image_generation, video_generation, and visual_language_chat (both cpp and c)
+use file(DOWNLOAD ...) for stb_image.h / stb_image_write.h which bypasses
+FetchContent and can't be redirected via FETCHCONTENT_SOURCE_DIR_<NAME>.
+image_generation additionally pulls OpenCV via ExternalProject_Add git clone.
+
+speech_generation, automatic_speech_recognition, omni, and whisper_speech
+need dr_libs; dropping them simplifies the prestage list.
+
+The AI PC demo only needs text generation (chat_sample, benchmark_genai).
+Keep cpp/text_generation, cpp/rag (no deps), c/text_generation (no deps).
+
+--- a/samples/CMakeLists.txt
++++ b/samples/CMakeLists.txt
+@@ -1,18 +1,13 @@
+ # Copyright (C) 2018-2026 Intel Corporation
+ # SPDX-License-Identifier: Apache-2.0
+ #
+ if(ENABLE_SAMPLES)
+     add_subdirectory(cpp/text_generation)
+-    add_subdirectory(cpp/image_generation)
+-    add_subdirectory(cpp/video_generation)
+-    add_subdirectory(cpp/speech_generation)
+-    add_subdirectory(cpp/visual_language_chat)
+-    add_subdirectory(cpp/automatic_speech_recognition)
+-    add_subdirectory(cpp/omni)
++    # Dakota: image/video/speech/VLM/ASR samples dropped — see
++    # elements/bluefin-oneapi/patches/openvino-genai-text-samples-only.patch
++    # for the reasons (direct file(DOWNLOAD), OpenCV ExternalProject_Add, etc.).
+     add_subdirectory(cpp/rag)
+     add_subdirectory(c/text_generation)
+-    add_subdirectory(c/whisper_speech_recognition)
+-    add_subdirectory(c/visual_language_chat)
+ endif()
+
+ install(FILES
