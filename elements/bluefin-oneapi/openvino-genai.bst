@@ -55,6 +55,24 @@ sources:
   base-dir: pcre2-10.46
   directory: thirdparty_prefetched/pcre2
   ref: 8d28d7f2c3b970c3a4bf3776bcbb5adfc923183ce74bc8df1ebaad8c1985bd07
+
+# nlohmann_json: openvino-genai's src/cpp/CMakeLists.txt:109 FetchContents
+# v3.11.3. Hash matches what cmake declares.
+- kind: tar
+  url: github:nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
+  ref: 0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406
+  base-dir: json-3.11.3
+  directory: thirdparty_prefetched/nlohmann_json
+
+# minja: openvino-genai's src/cpp/CMakeLists.txt:117 FetchContents from a
+# git repo at a specific commit. kind: git pinned to the same commit; cmake
+# will use the staged tree instead of cloning when FETCHCONTENT_SOURCE_DIR_
+# is set.
+- kind: git
+  url: github:google/minja.git
+  track: main
+  ref: 3e4c61c616eda133cfb1e440fc7a14bf1729bbee
+  directory: thirdparty_prefetched/minja
 variables:
   strip-binaries: ""
   # ENABLE_PYTHON=OFF — same reason as openvino (we don't ship pybindings)
@@ -68,3 +86,5 @@ variables:
     -DENABLE_TESTS=OFF
     -DFETCHCONTENT_SOURCE_DIR_SENTENCEPIECE=%{build-root}/thirdparty_prefetched/sentencepiece
     -DFETCHCONTENT_SOURCE_DIR_PCRE2=%{build-root}/thirdparty_prefetched/pcre2
+    -DFETCHCONTENT_SOURCE_DIR_NLOHMANN_JSON=%{build-root}/thirdparty_prefetched/nlohmann_json
+    -DFETCHCONTENT_SOURCE_DIR_MINJA=%{build-root}/thirdparty_prefetched/minja
