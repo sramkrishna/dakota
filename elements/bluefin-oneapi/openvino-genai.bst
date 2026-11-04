@@ -90,11 +90,22 @@ sources:
   directory: thirdparty_prefetched/cxxopts
   ref: 3bfc70542c521d4b55a46429d808178916a579b28d048bd8c727ee76c39e2072
 
+# gguflib (from Lourdle/gguf-tools): openvino-genai's src/cpp/src/gguf_utils/
+# gguf.hpp unconditionally #includes <gguflib.h> even when ENABLE_GGUF is OFF
+# (the compile-time guard doesn't reach the header include). Prestage and
+# enable ENABLE_GGUF=ON to satisfy it. Hash from upstream's FetchContent
+# declaration for the equivalent commit archive.
+- kind: tar
+  url: github:Lourdle/gguf-tools/archive/bac796ada809ac293e685db59b075971181cb008.tar.gz
+  base-dir: gguf-tools-bac796ada809ac293e685db59b075971181cb008
+  directory: thirdparty_prefetched/gguflib
+
 # Patch samples/CMakeLists.txt to only build text_generation samples. The
 # image_generation / video_generation / visual_language_chat subdirs use
 # file(DOWNLOAD ...) and ExternalProject_Add which bypass FetchContent and
 # can't be redirected into hermetic bst — easier to drop them for the AI PC
 # demo (we only need chat_sample + benchmark_genai).
+  ref: e7ee705a2634bc598564e53679b268beef4e90e2eb6ded38787e334302775e75
 - kind: patch
   path: elements/bluefin-oneapi/patches/openvino-genai-text-samples-only.patch
 variables:
@@ -114,7 +125,7 @@ variables:
     -DENABLE_PYTHON=OFF
     -DENABLE_SAMPLES=ON
     -DENABLE_TESTS=OFF
-    -DENABLE_GGUF=OFF
+    -DENABLE_GGUF=ON
     -DENABLE_XGRAMMAR=OFF
     -DFETCHCONTENT_SOURCE_DIR_SENTENCEPIECE=%{build-root}/thirdparty_prefetched/sentencepiece
     -DFETCHCONTENT_SOURCE_DIR_PCRE2=%{build-root}/thirdparty_prefetched/pcre2
@@ -122,3 +133,4 @@ variables:
     -DFETCHCONTENT_SOURCE_DIR_MINJA=%{build-root}/thirdparty_prefetched/minja
     "-DFETCHCONTENT_SOURCE_DIR_SAFETENSORS.H=%{build-root}/thirdparty_prefetched/safetensors.h"
     -DFETCHCONTENT_SOURCE_DIR_CXXOPTS=%{build-root}/thirdparty_prefetched/cxxopts
+    -DFETCHCONTENT_SOURCE_DIR_GGUFLIB=%{build-root}/thirdparty_prefetched/gguflib
