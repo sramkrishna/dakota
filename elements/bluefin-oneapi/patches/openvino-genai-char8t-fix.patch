@@ -1,0 +1,22 @@
+Replace u8"�" with hex-escape literal to avoid GCC 16 char8_t strictness.
+
+In C++17 `u8"..."` is `const char[]`, but GCC 16 applies C++20 `char8_t` type
+even under -std=c++17, causing:
+
+    error: conversion from 'const char8_t [4]' to non-scalar type 'const std::string' requested
+
+The UTF-8 bytes of U+FFFD (REPLACEMENT CHARACTER) are EF BF BD — write them
+directly as a plain char literal so no u8 type juggling is involved.
+
+--- a/src/cpp/src/whisper/word_level_timestamps.cpp
++++ b/src/cpp/src/whisper/word_level_timestamps.cpp
+@@ -324,7 +324,8 @@
+     const std::vector<int64_t>& tokens,
+     ov::genai::Tokenizer& tokenizer) {
+     const std::string decoded_full = tokenizer.decode(tokens, ov::genai::skip_special_tokens(false));
+-    const std::string replacement_char = u8"�";
++    // u8"�" is char8_t[] under GCC 16 even in C++17 mode; use raw UTF-8 bytes instead.
++    const std::string replacement_char = "\xef\xbf\xbd";
+
+     std::vector<std::string> words;
+     std::vector<std::vector<int64_t>> word_tokens;

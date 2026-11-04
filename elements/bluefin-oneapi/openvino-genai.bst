@@ -108,6 +108,11 @@ sources:
   ref: e7ee705a2634bc598564e53679b268beef4e90e2eb6ded38787e334302775e75
 - kind: patch
   path: elements/bluefin-oneapi/patches/openvino-genai-text-samples-only.patch
+
+# Fix GCC 16 char8_t strictness in whisper/word_level_timestamps.cpp (u8"..."
+# resolves to char8_t[] even under -std=c++17 on GCC 16).
+- kind: patch
+  path: elements/bluefin-oneapi/patches/openvino-genai-char8t-fix.patch
 variables:
   strip-binaries: ""
   # ENABLE_PYTHON=OFF  — same reason as openvino (we don't ship pybindings)
