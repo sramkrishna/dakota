@@ -15,7 +15,7 @@ directly as a plain char literal so no u8 type juggling is involved.
      ov::genai::Tokenizer& tokenizer) {
      const std::string decoded_full = tokenizer.decode(tokens, ov::genai::skip_special_tokens(false));
 -    const std::string replacement_char = u8"�";
-+    // u8"�" is char8_t[] under GCC 16 even in C++17 mode; use raw UTF-8 bytes instead.
++    // u8"..." is char8_t[] under GCC 16 even in C++17 mode; use raw UTF-8 bytes instead.
 +    const std::string replacement_char = "\xef\xbf\xbd";
 
      std::vector<std::string> words;

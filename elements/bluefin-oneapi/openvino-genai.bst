@@ -139,3 +139,4 @@ variables:
     "-DFETCHCONTENT_SOURCE_DIR_SAFETENSORS.H=%{build-root}/thirdparty_prefetched/safetensors.h"
     -DFETCHCONTENT_SOURCE_DIR_CXXOPTS=%{build-root}/thirdparty_prefetched/cxxopts
     -DFETCHCONTENT_SOURCE_DIR_GGUFLIB=%{build-root}/thirdparty_prefetched/gguflib
+    "-DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -fno-char8_t"
