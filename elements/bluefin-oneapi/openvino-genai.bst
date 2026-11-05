@@ -132,6 +132,7 @@ variables:
     -DENABLE_TESTS=OFF
     -DENABLE_GGUF=ON
     -DENABLE_XGRAMMAR=OFF
+    -DENABLE_TOOLS=OFF
     -DFETCHCONTENT_SOURCE_DIR_SENTENCEPIECE=%{build-root}/thirdparty_prefetched/sentencepiece
     -DFETCHCONTENT_SOURCE_DIR_PCRE2=%{build-root}/thirdparty_prefetched/pcre2
     -DFETCHCONTENT_SOURCE_DIR_NLOHMANN_JSON=%{build-root}/thirdparty_prefetched/nlohmann_json
