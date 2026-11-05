@@ -1,4 +1,4 @@
-Replace u8"�" with hex-escape literal to avoid GCC 16 char8_t strictness.
+Replace u8"\uFFFD" with hex-escape literal to avoid GCC 16 char8_t strictness.
 
 In C++17 `u8"..."` is `const char[]`, but GCC 16 applies C++20 `char8_t` type
 even under -std=c++17, causing:
@@ -14,9 +14,9 @@ directly as a plain char literal so no u8 type juggling is involved.
      const std::vector<int64_t>& tokens,
      ov::genai::Tokenizer& tokenizer) {
      const std::string decoded_full = tokenizer.decode(tokens, ov::genai::skip_special_tokens(false));
--    const std::string replacement_char = u8"�";
+-    const std::string replacement_char = u8"\uFFFD";
 +    // u8"..." is char8_t[] under GCC 16 even in C++17 mode; use raw UTF-8 bytes instead.
 +    const std::string replacement_char = "\xef\xbf\xbd";
-
+ 
      std::vector<std::string> words;
      std::vector<std::vector<int64_t>> word_tokens;
