@@ -21,7 +21,7 @@ kind: import
 
 depends:
 - bluefin-oneapi/intel-npu-driver.bst
-- bluefin-oneapi/level-zero.bst
+- bluefin-oneapi/levelzero.bst
 - bluefin-oneapi/model-phi3-mini-int4.bst
 
 sources:
