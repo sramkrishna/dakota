@@ -1,0 +1,57 @@
+# OpenVINO Model Server (OVMS) — serves Phi-3-mini-4k-instruct-int4 on Intel NPU
+# via an OpenAI-compatible HTTP API (POST /v1/chat/completions, GET /v1/models).
+#
+# Deployed as a podman quadlet unit; systemd generates ovms.service at boot.
+# The container image is pulled on first start (no pre-pull, keeps the bootc
+# image lean); subsequent starts use the local image cache.
+#
+# To iterate on CLI args without rebuilding the sysext:
+#   sudo systemctl edit ovms.service          # drop-in override
+#   sudo systemctl restart ovms
+
+[Unit]
+Description=OpenVINO Model Server — Phi-3 on Intel NPU
+Documentation=https://docs.openvino.ai/2026/model-server/ovms_what_is_openvino_model_server.html
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+# Pinned tag matches our openvino.bst line. Bump manually when upgrading;
+# don't use :latest — surprise upgrades on first-boot pull break reproducibility.
+Image=docker.io/openvino/model_server:2026.3
+
+# OVMS single-model mode pointing at the mediapipe graph.pbtxt that lives
+# alongside the Phi-3 model IR files. The pbtxt is pre-generated once by
+# `ovms --configure --model_path ... --task text_generation` (see the ovms.bst
+# element for the one-shot command we ran to produce it).
+Exec=--model_name phi3-mini-int4 --model_path /models/phi3-mini-int4 --rest_port 8080
+
+# Bind-mount the model directory read-only. :z relabels for SELinux so podman
+# can read even when the targeted policy is enforcing (bluefin default).
+Volume=/usr/share/models:/models:ro,z
+
+# Expose the OpenAI API on loopback only by default. Change to `0.0.0.0:8080`
+# or `[::]:8080` once you want other devices on the LAN to reach it.
+PublishPort=127.0.0.1:8080:8080
+
+# Intel NPU device passthrough. The device node is created by the
+# intel-npu-driver element. Older kernels (<6.8) called this /dev/intel_vpu
+# — update here if the target's uname -r says otherwise.
+AddDevice=/dev/accel/accel0
+
+# NPU DMA needs mlock'd buffers. Default container memlock is 64 KB which is
+# too small for the model's weight-pinning path; lift it.
+PodmanArgs=--ulimit memlock=-1
+
+# Keep OVMS journal output readable. INFO is a good default; bump to DEBUG
+# via `systemctl edit ovms` when triaging.
+Environment=LOG_LEVEL=INFO
+
+[Service]
+Restart=on-failure
+RestartSec=10s
+# Give OVMS time to pull the image + load the model on first boot.
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target default.target
