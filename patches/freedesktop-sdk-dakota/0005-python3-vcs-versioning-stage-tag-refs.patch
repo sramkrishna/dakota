@@ -1,0 +1,32 @@
+Upstream-Status: Pending
+Exit: Drop when freedesktop-sdk's python3-vcs-versioning.bst upstream carries ref-format: git-describe on its git_repo source.
+Subject: python3-vcs-versioning: stage tag refs so sandbox git-describe returns
+
+Same failure mode as python3-setuptools-scm (see 0004). The git_repo
+source defaults to ref-format: sha1 and does not guarantee tag refs
+are present in the staged clone. vcs-versioning's build hook runs
+
+    git describe --dirty --tags --long --abbrev=40 --match 'vcs-versioning-*'
+
+which walks the commit graph looking for a matching tag; with no tag
+refs staged it exhausts setuptools-scm's default 40-second subprocess
+timeout and fails the build (subprocess.TimeoutExpired).
+
+Setting ref-format: git-describe instructs the plugin to stage the tag
+refs so the sandbox git-describe returns in milliseconds. The element's
+existing ref is already in git-describe format
+(vcs-versioning-v2.6.0-0-gfa5c2319...), so this is consistent with how
+the ref is stored.
+
+Resolves: setuptools-scm#957.
+
+diff --git a/elements/components/python3-vcs-versioning.bst b/elements/components/python3-vcs-versioning.bst
+--- a/elements/components/python3-vcs-versioning.bst
++++ b/elements/components/python3-vcs-versioning.bst
+@@ -17,5 +17,6 @@ variables:
+ sources:
+ - kind: git_repo
+   url: github:pypa/setuptools_scm.git
++  ref-format: git-describe
+   track: vcs-versioning-v*
+   ref: vcs-versioning-v2.6.0-0-gfa5c2319fef46bea5e387e1329245e7eaffa6f1e
