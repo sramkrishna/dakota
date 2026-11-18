@@ -1,0 +1,36 @@
+Upstream-Status: Pending
+Exit: Drop when freedesktop-sdk resolves setuptools-scm git-describe timeouts at the fdsdk level (e.g. by actually staging tag refs into the sandbox).
+Subject: python3-setuptools-scm: bypass git-describe with SETUPTOOLS_SCM_PRETEND_VERSION
+
+The ref-format: git-describe patch (0004) was insufficient. Observation
+from build r9wtl: patch 0004 was applied (log confirms git apply
+succeeded for 0004 and 0005), but setuptools-scm still failed with the
+same subprocess.TimeoutExpired at the same action hash (5a3c6508) as
+the pre-patch run. ref-format changes how the ref is serialized in the
+element YAML but does not push tag refs into the staged sandbox, so
+git describe --match 'setuptools-scm-*' still has nothing to match
+and exhausts the 40s subprocess timeout.
+
+Setting SETUPTOOLS_SCM_PRETEND_VERSION_FOR_SETUPTOOLS_SCM in the
+element's build env instructs setuptools-scm to use the given string
+verbatim as the package version and skip VCS detection entirely. This
+is the upstream-documented escape hatch for hermetic/sandboxed builds.
+Version picked to match the element's existing ref
+(setuptools-scm-v10.3.4-0-gb27f5973...).
+
+Resolves: setuptools-scm#957 (upstream-documented workaround).
+
+diff --git a/elements/components/python3-setuptools-scm.bst b/elements/components/python3-setuptools-scm.bst
+--- a/elements/components/python3-setuptools-scm.bst
++++ b/elements/components/python3-setuptools-scm.bst
+@@ -18,6 +18,10 @@ runtime-depends:
+ variables:
+   command-subdir: setuptools-scm
+
++environment:
++  # setuptools-scm#957 workaround: skip git-describe (times out in sandbox).
++  SETUPTOOLS_SCM_PRETEND_VERSION_FOR_SETUPTOOLS_SCM: "10.3.4"
++
+ sources:
+ - kind: git_repo
+   url: github:pypa/setuptools_scm.git
