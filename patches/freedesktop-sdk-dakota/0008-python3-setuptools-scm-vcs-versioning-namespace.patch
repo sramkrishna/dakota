@@ -1,0 +1,31 @@
+Upstream-Status: Pending
+Exit: Drop alongside 0006 when fdsdk resolves the sandbox git-describe timeout at source.
+Subject: python3-setuptools-scm: add VCS_VERSIONING_PRETEND_VERSION_FOR_SETUPTOOLS_SCM
+
+Patch 0006 set SETUPTOOLS_SCM_PRETEND_VERSION_FOR_SETUPTOOLS_SCM in the
+element environment. Confirmed in the in-sandbox env dump (build log
+"Build environment" section) that the var reaches the build. However,
+build 9vclb still invoked git describe at build time, proving the var
+was not consulted.
+
+The reason: setuptools-scm's build backend has been migrating to
+"vcs-versioning" (same repo, different package name, different env
+namespace). When the backend used for THIS element is the
+vcs-versioning variant, it reads VCS_VERSIONING_PRETEND_VERSION_FOR_X,
+not SETUPTOOLS_SCM_PRETEND_VERSION_FOR_X.
+
+Add the VCS_VERSIONING_* equivalent alongside the existing var so the
+override takes effect regardless of which backend path is used.
+Version matches the element's ref (setuptools-scm-v10.3.4-0-gb27f...).
+
+diff --git a/elements/components/python3-setuptools-scm.bst b/elements/components/python3-setuptools-scm.bst
+--- a/elements/components/python3-setuptools-scm.bst
++++ b/elements/components/python3-setuptools-scm.bst
+@@ -21,6 +21,7 @@ variables:
+ environment:
+   # setuptools-scm#957 workaround: skip git-describe (times out in sandbox).
+   SETUPTOOLS_SCM_PRETEND_VERSION_FOR_SETUPTOOLS_SCM: "10.3.4"
++  VCS_VERSIONING_PRETEND_VERSION_FOR_SETUPTOOLS_SCM: "10.3.4"
+
+ sources:
+ - kind: git_repo

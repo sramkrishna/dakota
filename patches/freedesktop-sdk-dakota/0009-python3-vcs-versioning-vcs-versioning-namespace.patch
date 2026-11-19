@@ -1,0 +1,24 @@
+Upstream-Status: Pending
+Exit: Drop alongside 0007 when fdsdk resolves the sandbox git-describe timeout at source.
+Subject: python3-vcs-versioning: add VCS_VERSIONING_PRETEND_VERSION_FOR_VCS_VERSIONING
+
+Companion to 0008. Patch 0007 set the SETUPTOOLS_SCM_PRETEND_VERSION
+variant; confirmed to reach the sandbox but ignored by vcs-versioning's
+own backend, which uses the VCS_VERSIONING_* env namespace. Build 9vclb
+still ran git describe --match 'vcs-versioning-*' and hit the 40s
+subprocess timeout.
+
+Add the VCS_VERSIONING_* equivalent. Version matches the element's ref
+(vcs-versioning-v2.6.0-0-gfa5c2319...).
+
+diff --git a/elements/components/python3-vcs-versioning.bst b/elements/components/python3-vcs-versioning.bst
+--- a/elements/components/python3-vcs-versioning.bst
++++ b/elements/components/python3-vcs-versioning.bst
+@@ -17,6 +17,7 @@ variables:
+ environment:
+   # setuptools-scm#957 workaround: skip git-describe (times out in sandbox).
+   SETUPTOOLS_SCM_PRETEND_VERSION_FOR_VCS_VERSIONING: "2.6.0"
++  VCS_VERSIONING_PRETEND_VERSION_FOR_VCS_VERSIONING: "2.6.0"
+
+ sources:
+ - kind: git_repo
