@@ -1,0 +1,36 @@
+Upstream-Status: Pending
+Exit: Drop when fdsdk resolves version detection for hatchling/vcs-backed packages in the sandbox.
+Subject: python3-chardet: bypass setuptools-scm with SETUPTOOLS_SCM_PRETEND_VERSION
+
+Same class of failure as 0006/0007/0008/0009, surfaced after build
+pdndj got far enough to attempt chardet. chardet's pyproject.toml uses
+hatchling with [tool.hatch.version] source='vcs', which internally
+delegates to setuptools-scm. setuptools-scm then fails with:
+
+  LookupError: Error getting the version from source `vcs`:
+  setuptools-scm was unable to detect version for /buildstream-build.
+  However, a repository was found in a parent directory: /buildstream-build
+
+In the sandbox, the git clone's internal layout is just different
+enough from what setuptools-scm expects that it bails. The upstream-
+documented escape hatch — set PRETEND_VERSION — is the same here.
+Setting both namespaces for coverage (SETUPTOOLS_SCM_* for hatchling's
+backend path; VCS_VERSIONING_* if the backend ever switches).
+
+Version matches the element's existing ref (6.0.0-0-g8a4636b1...).
+
+diff --git a/elements/components/python3-chardet.bst b/elements/components/python3-chardet.bst
+--- a/elements/components/python3-chardet.bst
++++ b/elements/components/python3-chardet.bst
+@@ -9,6 +9,11 @@ build-depends:
+ depends:
+ - components/python3.bst
+
++environment:
++  # setuptools-scm#957 workaround: skip VCS version detection in sandbox.
++  SETUPTOOLS_SCM_PRETEND_VERSION_FOR_CHARDET: "6.0.0"
++  VCS_VERSIONING_PRETEND_VERSION_FOR_CHARDET: "6.0.0"
++
+ sources:
+ - kind: git_repo
+   url: github:chardet/chardet.git
