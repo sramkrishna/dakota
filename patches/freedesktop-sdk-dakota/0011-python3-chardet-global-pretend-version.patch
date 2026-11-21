@@ -1,0 +1,29 @@
+Upstream-Status: Pending
+Exit: Drop alongside 0010 when fdsdk resolves version detection for hatch-vcs-backed packages in the sandbox.
+Subject: python3-chardet: use UNQUALIFIED PRETEND_VERSION env vars
+
+Build r2p77 shows the per-dist-name env vars from 0010 arriving in the
+sandbox (log: "SETUPTOOLS_SCM_PRETEND_VERSION_FOR_CHARDET: 6.0.0" and
+"VCS_VERSIONING_PRETEND_VERSION_FOR_CHARDET: 6.0.0") — but they are
+not consulted. vcs_versioning._get_version_impl still runs
+git describe --match '*[0-9]*' (note the generic pattern, not
+chardet-specific) and hits the 40s subprocess timeout. hatchling's
+error-formatting path then crashes with TypeError when trying to
+re-raise TimeoutExpired.
+
+Something in the hatch-vcs -> setuptools-scm -> vcs_versioning handoff
+drops the dist-name match. Add the UNQUALIFIED env vars — they apply
+globally regardless of the dist name passed in. Safe because chardet
+is the only package built inside this element.
+
+diff --git a/elements/components/python3-chardet.bst b/elements/components/python3-chardet.bst
+--- a/elements/components/python3-chardet.bst
++++ b/elements/components/python3-chardet.bst
+@@ -1,6 +1,8 @@
+ environment:
+   # setuptools-scm#957 workaround: skip VCS version detection in sandbox.
++  SETUPTOOLS_SCM_PRETEND_VERSION: "6.0.0"
++  VCS_VERSIONING_PRETEND_VERSION: "6.0.0"
+   SETUPTOOLS_SCM_PRETEND_VERSION_FOR_CHARDET: "6.0.0"
+   VCS_VERSIONING_PRETEND_VERSION_FOR_CHARDET: "6.0.0"
+
