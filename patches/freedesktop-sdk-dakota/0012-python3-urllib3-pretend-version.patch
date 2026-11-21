@@ -1,0 +1,30 @@
+Upstream-Status: Pending
+Exit: Drop when fdsdk resolves version detection for hatch-vcs-backed packages in the sandbox.
+Subject: python3-urllib3: bypass setuptools-scm with PRETEND_VERSION
+
+Build nksdr surfaced urllib3 as the next element hitting the chardet-
+class failure. urllib3 uses hatchling with [tool.hatch.version]
+source='vcs' which delegates to setuptools-scm -> vcs_versioning, same
+as chardet (see 0011). urllib3 already carries fdsdk-local patches
+(version.patch, setuptools_scm_version.patch) but they are insufficient
+to avoid the git-describe timeout in the sandbox.
+
+Setting both the UNQUALIFIED PRETEND_VERSION env vars (which 0011
+proved work) and the dist-qualified variants. Version matches the
+element's existing ref (2.7.0-0-g9a950b92...).
+
+diff --git a/elements/components/python3-urllib3.bst b/elements/components/python3-urllib3.bst
+--- a/elements/components/python3-urllib3.bst
++++ b/elements/components/python3-urllib3.bst
+@@ -12,4 +12,11 @@ depends:
+ variables:
+   strip-binaries: ''
+
++environment:
++  # setuptools-scm#957 workaround: skip VCS version detection in sandbox.
++  SETUPTOOLS_SCM_PRETEND_VERSION: "2.7.0"
++  VCS_VERSIONING_PRETEND_VERSION: "2.7.0"
++  SETUPTOOLS_SCM_PRETEND_VERSION_FOR_URLLIB3: "2.7.0"
++  VCS_VERSIONING_PRETEND_VERSION_FOR_URLLIB3: "2.7.0"
++
+ sources:
