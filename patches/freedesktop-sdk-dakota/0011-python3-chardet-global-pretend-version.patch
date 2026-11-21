@@ -19,11 +19,10 @@ is the only package built inside this element.
 diff --git a/elements/components/python3-chardet.bst b/elements/components/python3-chardet.bst
 --- a/elements/components/python3-chardet.bst
 +++ b/elements/components/python3-chardet.bst
-@@ -1,6 +1,8 @@
+@@ -13,4 +13,6 @@ depends:
  environment:
    # setuptools-scm#957 workaround: skip VCS version detection in sandbox.
 +  SETUPTOOLS_SCM_PRETEND_VERSION: "6.0.0"
 +  VCS_VERSIONING_PRETEND_VERSION: "6.0.0"
    SETUPTOOLS_SCM_PRETEND_VERSION_FOR_CHARDET: "6.0.0"
    VCS_VERSIONING_PRETEND_VERSION_FOR_CHARDET: "6.0.0"
-
